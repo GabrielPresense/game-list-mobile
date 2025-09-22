@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
 import { List } from './list.entity';
+import { User } from './user.entity';
 
 export enum ItemType {
   GAME = 'game',
@@ -61,6 +62,13 @@ export class Item {
 
   @Column()
   listId: number;
+
+  @ManyToOne(() => User, user => user.lists)
+  @JoinColumn({ name: 'userId' })
+  user: User;
+
+  @Column()
+  userId: number;
 
   @CreateDateColumn()
   createdAt: Date;
