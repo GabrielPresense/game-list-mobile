@@ -13,7 +13,7 @@ import { useNavigation, useFocusEffect, CompositeNavigationProp } from '@react-n
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TabParamList, RootStackParamList } from '../navigation/AppNavigator';
-import { listsService, itemsService } from '../services/api';
+import { listsService, itemsService, authService } from '../services/api';
 import { List, Item, ListType, ItemType, ItemStatus } from '../types';
 
 type HomeScreenNavigationProp = CompositeNavigationProp<
@@ -99,6 +99,24 @@ export default function HomeScreen() {
     loadData();
   };
 
+  const handleForceLogout = async () => {
+    Alert.alert(
+      'Logout Forçado',
+      'Deseja fazer logout? Isso irá limpar todos os dados de autenticação.',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { 
+          text: 'Logout', 
+          style: 'destructive',
+          onPress: async () => {
+            await authService.logout();
+            Alert.alert('Logout realizado', 'Reinicie o app para ver a tela de login');
+          }
+        }
+      ]
+    );
+  };
+
   const StatCard = ({ title, value, icon, color, onPress }: {
     title: string;
     value: number;
@@ -138,8 +156,15 @@ export default function HomeScreen() {
       }
     >
       <View style={styles.header}>
-        <Text style={styles.welcomeText}>Bem-vindo!</Text>
-        <Text style={styles.subtitleText}>Gerencie suas listas de jogos, filmes e séries</Text>
+        <View style={styles.headerContent}>
+          <View>
+            <Text style={styles.welcomeText}>Bem-vindo!</Text>
+            <Text style={styles.subtitleText}>Gerencie suas listas de jogos, filmes e séries</Text>
+          </View>
+          <TouchableOpacity onPress={handleForceLogout} style={styles.logoutButton}>
+            <Ionicons name="log-out-outline" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.section}>
@@ -277,6 +302,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     padding: 20,
     paddingTop: 40,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  logoutButton: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
   welcomeText: {
     fontSize: 28,

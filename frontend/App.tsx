@@ -19,9 +19,11 @@ export default function App() {
   const checkAuthStatus = async () => {
     try {
       const authenticated = await authService.isAuthenticated();
+      console.log('Status de autenticação:', authenticated);
       setIsAuthenticated(authenticated);
     } catch (error) {
       console.log('Erro ao verificar autenticação:', error);
+      setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
     }

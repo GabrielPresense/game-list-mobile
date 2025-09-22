@@ -169,8 +169,19 @@ export const authService = {
 
   // Verificar se está logado
   isAuthenticated: async () => {
-    const token = await AsyncStorage.getItem('authToken');
-    return !!token;
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      if (!token) return false;
+      
+      // Verificar se o token é válido fazendo uma requisição
+      const response = await api.get('/auth/profile');
+      return response.status === 200;
+    } catch (error) {
+      // Se der erro, limpar o token e retornar false
+      await AsyncStorage.removeItem('authToken');
+      await AsyncStorage.removeItem('user');
+      return false;
+    }
   },
 
   // Obter token
