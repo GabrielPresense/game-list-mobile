@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     paddingTop: 15,
-    paddingBottom: 40, // Espaço extra para evitar conflito com botões do sistema
+    paddingBottom: 60, // Espaço extra para evitar conflito com botões do sistema
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
