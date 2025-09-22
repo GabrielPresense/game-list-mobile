@@ -30,9 +30,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // Escutar em todas as interfaces para permitir acesso externo
-  await app.listen(3000, '0.0.0.0');
-  console.log('Aplicação rodando em http://0.0.0.0:3000');
-  console.log('Documentação Swagger disponível em http://0.0.0.0:3000/api');
+  const port = process.env.PORT || 3000;
+  await app.listen(port, '0.0.0.0');
+  console.log(`🚀 Aplicação rodando em http://0.0.0.0:${port}`);
+  console.log(`📚 Documentação Swagger disponível em http://0.0.0.0:${port}/api`);
 }
 bootstrap();
 
