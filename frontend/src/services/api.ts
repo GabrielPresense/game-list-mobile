@@ -5,7 +5,7 @@ import { List, Item, CreateListDto, UpdateListDto, CreateItemDto, UpdateItemDto 
 // Configure a URL base da API - para produção, use a URL da nuvem
 const API_BASE_URL = __DEV__ 
   ? 'http://192.168.0.5:3000'  // Desenvolvimento local
-  : 'https://your-app.railway.app';  // Produção na nuvem
+  : 'https://SEU-APP.railway.app';  // ⚠️ SUBSTITUA pela URL real do Railway
 
 const api = axios.create({
   baseURL: API_BASE_URL,
