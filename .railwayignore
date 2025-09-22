@@ -1,0 +1,11 @@
+# Ignorar frontend no deploy do Railway
+frontend/
+node_modules/
+.git/
+.gitignore
+README.md
+DEPLOY_GUIDE.md
+DEPLOY_INSTRUCTIONS.md
+UPDATE_API_URL.md
+deploy.sh
+deploy.bat

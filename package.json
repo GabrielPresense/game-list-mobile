@@ -1,0 +1,17 @@
+{
+  "name": "game-list-mobile",
+  "version": "1.0.0",
+  "description": "Sistema completo para gerenciar listas de jogos, filmes e séries",
+  "scripts": {
+    "start": "cd backend && npm run start:prod",
+    "build": "cd backend && npm run build",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "dev:backend": "cd backend && npm run start:dev",
+    "dev:frontend": "cd frontend && npm start"
+  },
+  "keywords": ["game-list", "mobile", "react-native", "nestjs", "api"],
+  "author": "Gabriel Presense",
+  "license": "MIT"
+}
