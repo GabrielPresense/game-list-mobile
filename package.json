@@ -4,7 +4,9 @@
   "description": "Sistema completo para gerenciar listas de jogos, filmes e séries",
   "scripts": {
     "start": "cd backend && npm run start:prod",
+    "start:prod": "cd backend && npm run start:prod",
     "build": "cd backend && npm run build",
+    "install": "cd backend && npm install",
     "install:backend": "cd backend && npm install",
     "install:frontend": "cd frontend && npm install",
     "install:all": "npm run install:backend && npm run install:frontend",
