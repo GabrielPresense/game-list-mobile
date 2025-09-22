@@ -16,26 +16,14 @@ import { User } from './common/entities/user.entity';
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => {
-        const isPostgres = process.env.DATABASE_TYPE === 'postgres';
-        
-        if (isPostgres) {
-          return {
-            type: 'postgres',
-            url: process.env.DATABASE_URL,
-            entities: [Item, List, User],
-            synchronize: process.env.NODE_ENV !== 'production',
-            logging: process.env.NODE_ENV === 'development',
-            ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-          };
-        } else {
-          return {
-            type: 'sqlite',
-            database: process.env.DATABASE_URL || 'database.sqlite',
-            entities: [Item, List, User],
-            synchronize: process.env.NODE_ENV !== 'production',
-            logging: process.env.NODE_ENV === 'development',
-          };
-        }
+        // Forçar SQLite para Railway por enquanto
+        return {
+          type: 'sqlite',
+          database: 'database.sqlite',
+          entities: [Item, List, User],
+          synchronize: true, // Permitir sincronização para criar tabelas
+          logging: process.env.NODE_ENV === 'development',
+        };
       },
     }),
     AuthModule,
