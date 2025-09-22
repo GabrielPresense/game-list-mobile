@@ -163,8 +163,13 @@ export const authService = {
 
   // Fazer logout
   logout: async () => {
-    await AsyncStorage.removeItem('authToken');
-    await AsyncStorage.removeItem('user');
+    try {
+      await AsyncStorage.removeItem('authToken');
+      await AsyncStorage.removeItem('user');
+      console.log('Logout realizado com sucesso');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   },
 
   // Verificar se está logado

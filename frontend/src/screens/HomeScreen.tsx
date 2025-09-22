@@ -99,10 +99,10 @@ export default function HomeScreen() {
     loadData();
   };
 
-  const handleForceLogout = async () => {
+  const handleLogout = async () => {
     Alert.alert(
-      'Logout Forçado',
-      'Deseja fazer logout? Isso irá limpar todos os dados de autenticação.',
+      'Logout',
+      'Deseja fazer logout?',
       [
         { text: 'Cancelar', style: 'cancel' },
         { 
@@ -110,7 +110,7 @@ export default function HomeScreen() {
           style: 'destructive',
           onPress: async () => {
             await authService.logout();
-            Alert.alert('Logout realizado', 'Reinicie o app para ver a tela de login');
+            // O App.tsx vai detectar automaticamente e mostrar a tela de login
           }
         }
       ]
@@ -161,7 +161,7 @@ export default function HomeScreen() {
             <Text style={styles.welcomeText}>Bem-vindo!</Text>
             <Text style={styles.subtitleText}>Gerencie suas listas de jogos, filmes e séries</Text>
           </View>
-          <TouchableOpacity onPress={handleForceLogout} style={styles.logoutButton}>
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
             <Ionicons name="log-out-outline" size={24} color="#fff" />
           </TouchableOpacity>
         </View>

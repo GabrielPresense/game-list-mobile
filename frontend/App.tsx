@@ -40,6 +40,8 @@ export default function App() {
   const handleLogout = async () => {
     await authService.logout();
     setIsAuthenticated(false);
+    // Forçar re-render para mostrar tela de login
+    setShowRegister(false);
   };
 
   if (isLoading) {
