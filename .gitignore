@@ -81,53 +81,6 @@ jspm_packages/
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-# Expo
-.expo/
-.expo-shared/
-
-# EAS
-.easignore
-
-# Metro
-.metro-health-check*
-
-# Android
-android/app/build/
-android/build/
-android/.gradle/
-android/captures/
-android/gradlew
-android/gradlew.bat
-android/local.properties
-*.keystore
-!debug.keystore
-
-# iOS
-ios/build/
-ios/Pods/
-ios/*.xcworkspace
-ios/*.xcuserdata
-ios/UserInterfaceState.xcuserstate
-
-# macOS
-.DS_Store
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Temporary files
-*.tmp
-*.temp
-
 # OS generated files
 .DS_Store
 .DS_Store?

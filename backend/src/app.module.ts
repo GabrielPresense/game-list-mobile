@@ -14,17 +14,28 @@ import { User } from './common/entities/user.entity';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: process.env.DATABASE_TYPE === 'postgres' ? 'postgres' : 'sqlite',
-        database: process.env.DATABASE_URL || 'database.sqlite',
-        entities: [Item, List, User],
-        synchronize: process.env.NODE_ENV !== 'production',
-        logging: process.env.NODE_ENV === 'development',
-        ...(process.env.DATABASE_TYPE === 'postgres' && {
-          url: process.env.DATABASE_URL,
-          ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-        }),
-      }),
+      useFactory: () => {
+        const isPostgres = process.env.DATABASE_TYPE === 'postgres';
+        
+        if (isPostgres) {
+          return {
+            type: 'postgres',
+            url: process.env.DATABASE_URL,
+            entities: [Item, List, User],
+            synchronize: process.env.NODE_ENV !== 'production',
+            logging: process.env.NODE_ENV === 'development',
+            ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+          };
+        } else {
+          return {
+            type: 'sqlite',
+            database: process.env.DATABASE_URL || 'database.sqlite',
+            entities: [Item, List, User],
+            synchronize: process.env.NODE_ENV !== 'production',
+            logging: process.env.NODE_ENV === 'development',
+          };
+        }
+      },
     }),
     AuthModule,
     ItemsModule,
