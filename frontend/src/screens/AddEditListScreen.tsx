@@ -7,9 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -17,6 +14,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { listsService } from '../services/api';
 import { ListType, CreateListDto, UpdateListDto } from '../types';
+import SafeScreen from '../components/SafeScreen';
 
 type AddEditListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AddEditList'>;
 type AddEditListScreenRouteProp = RouteProp<RootStackParamList, 'AddEditList'>;
@@ -136,73 +134,68 @@ export default function AddEditListScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={styles.keyboardView}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <SafeScreen>
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
       >
-        <ScrollView 
-          style={styles.scrollView} 
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.form}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Nome da Lista *</Text>
-              <TextInput
-                style={styles.input}
-                value={name}
-                onChangeText={setName}
-                placeholder="Ex: Meus jogos favoritos"
-                maxLength={100}
-              />
-            </View>
+        <View style={styles.form}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Nome da Lista *</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              placeholder="Ex: Meus jogos favoritos"
+              maxLength={100}
+            />
+          </View>
 
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Tipo da Lista *</Text>
-              <View style={styles.typeContainer}>
-                {listTypes.map(renderTypeOption)}
-              </View>
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Descrição (Opcional)</Text>
-              <TextInput
-                style={[styles.input, styles.textArea]}
-                value={description}
-                onChangeText={setDescription}
-                placeholder="Adicione uma descrição para sua lista..."
-                multiline
-                numberOfLines={4}
-                maxLength={500}
-              />
-              <Text style={styles.charCount}>
-                {description.length}/500 caracteres
-              </Text>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Tipo da Lista *</Text>
+            <View style={styles.typeContainer}>
+              {listTypes.map(renderTypeOption)}
             </View>
           </View>
-        </ScrollView>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.cancelButtonText}>Cancelar</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={[styles.saveButton, loading && styles.saveButtonDisabled]}
-            onPress={handleSave}
-            disabled={loading}
-          >
-            <Text style={styles.saveButtonText}>
-              {loading ? 'Salvando...' : isEditing ? 'Atualizar' : 'Criar Lista'}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Descrição (Opcional)</Text>
+            <TextInput
+              style={[styles.input, styles.textArea]}
+              value={description}
+              onChangeText={setDescription}
+              placeholder="Adicione uma descrição para sua lista..."
+              multiline
+              numberOfLines={4}
+              maxLength={500}
+            />
+            <Text style={styles.charCount}>
+              {description.length}/500 caracteres
             </Text>
-          </TouchableOpacity>
+          </View>
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </ScrollView>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.cancelButtonText}>Cancelar</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={[styles.saveButton, loading && styles.saveButtonDisabled]}
+          onPress={handleSave}
+          disabled={loading}
+        >
+          <Text style={styles.saveButtonText}>
+            {loading ? 'Salvando...' : isEditing ? 'Atualizar' : 'Criar Lista'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeScreen>
   );
 }
 
@@ -287,7 +280,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     paddingTop: 15,
-    paddingBottom: 25, // Espaço extra para evitar conflito com botões do sistema
+    paddingBottom: 40, // Espaço extra para evitar conflito com botões do sistema
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',

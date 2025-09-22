@@ -7,9 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -17,6 +14,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { itemsService, listsService } from '../services/api';
 import { ItemType, ItemStatus, CreateItemDto, UpdateItemDto, List } from '../types';
+import SafeScreen from '../components/SafeScreen';
 
 type AddEditItemScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AddEditItem'>;
 type AddEditItemScreenRouteProp = RouteProp<RootStackParamList, 'AddEditItem'>;
@@ -211,10 +209,7 @@ export default function AddEditItemScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <SafeScreen>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.form}>
           <View style={styles.inputGroup}>
@@ -384,7 +379,7 @@ export default function AddEditItemScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
+    </SafeScreen>
   );
 }
 
@@ -460,10 +455,18 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 15,
+    paddingBottom: 40, // Espaço extra para evitar conflito com botões do sistema
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
+    // Adicionar sombra sutil para destacar os botões
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 5,
   },
   cancelButton: {
     flex: 1,
