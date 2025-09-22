@@ -8,23 +8,28 @@ import {
   Delete,
   Query,
   ParseIntPipe,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from '../../common/dto/create-item.dto';
 import { UpdateItemDto } from '../../common/dto/update-item.dto';
 import { Item } from '../../common/entities/item.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('items')
 @Controller('items')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
   @Post()
   @ApiOperation({ summary: 'Criar um novo item' })
   @ApiResponse({ status: 201, description: 'Item criado com sucesso', type: Item })
-  create(@Body() createItemDto: CreateItemDto): Promise<Item> {
-    return this.itemsService.create(createItemDto);
+  create(@Body() createItemDto: CreateItemDto, @Request() req): Promise<Item> {
+    return this.itemsService.create(createItemDto, req.user.id);
   }
 
   @Get()

@@ -3,9 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { List, Item, CreateListDto, UpdateListDto, CreateItemDto, UpdateItemDto } from '../types';
 
 // Configure a URL base da API - para produção, use a URL da nuvem
-const API_BASE_URL = __DEV__ 
-  ? 'http://192.168.0.5:3000'  // Desenvolvimento local
-  : 'https://SEU-APP.railway.app';  // ⚠️ SUBSTITUA pela URL real do Railway
+const API_BASE_URL = 'https://game-list-mobile-production.up.railway.app';  // ✅ Sempre usar a nuvem
 
 const api = axios.create({
   baseURL: API_BASE_URL,

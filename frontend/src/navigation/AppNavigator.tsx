@@ -1,4 +1,5 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -77,7 +78,11 @@ function TabNavigator() {
   );
 }
 
-export default function AppNavigator() {
+interface AppNavigatorProps {
+  onLogout: () => void;
+}
+
+export default function AppNavigator({ onLogout }: AppNavigatorProps) {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -94,7 +99,17 @@ export default function AppNavigator() {
         <Stack.Screen 
           name="MainTabs" 
           component={TabNavigator} 
-          options={{ headerShown: false }}
+          options={{ 
+            headerShown: false,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={onLogout}
+                style={{ marginRight: 15 }}
+              >
+                <Ionicons name="log-out-outline" size={24} color="#fff" />
+              </TouchableOpacity>
+            ),
+          }}
         />
         <Stack.Screen 
           name="AddEditList" 

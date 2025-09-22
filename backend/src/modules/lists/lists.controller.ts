@@ -8,23 +8,28 @@ import {
   Delete,
   Query,
   ParseIntPipe,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { ListsService } from './lists.service';
 import { CreateListDto } from '../../common/dto/create-list.dto';
 import { UpdateListDto } from '../../common/dto/update-list.dto';
 import { List } from '../../common/entities/list.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('lists')
 @Controller('lists')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class ListsController {
   constructor(private readonly listsService: ListsService) {}
 
   @Post()
   @ApiOperation({ summary: 'Criar uma nova lista' })
   @ApiResponse({ status: 201, description: 'Lista criada com sucesso', type: List })
-  create(@Body() createListDto: CreateListDto): Promise<List> {
-    return this.listsService.create(createListDto);
+  create(@Body() createListDto: CreateListDto, @Request() req): Promise<List> {
+    return this.listsService.create(createListDto, req.user.id);
   }
 
   @Get()

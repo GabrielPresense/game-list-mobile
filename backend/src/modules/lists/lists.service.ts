@@ -12,8 +12,11 @@ export class ListsService {
     private listsRepository: Repository<List>,
   ) {}
 
-  async create(createListDto: CreateListDto): Promise<List> {
-    const list = this.listsRepository.create(createListDto);
+  async create(createListDto: CreateListDto, userId: number): Promise<List> {
+    const list = this.listsRepository.create({
+      ...createListDto,
+      userId,
+    });
     return await this.listsRepository.save(list);
   }
 

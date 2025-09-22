@@ -12,8 +12,11 @@ export class ItemsService {
     private itemsRepository: Repository<Item>,
   ) {}
 
-  async create(createItemDto: CreateItemDto): Promise<Item> {
-    const item = this.itemsRepository.create(createItemDto);
+  async create(createItemDto: CreateItemDto, userId: number): Promise<Item> {
+    const item = this.itemsRepository.create({
+      ...createItemDto,
+      userId,
+    });
     return await this.itemsRepository.save(item);
   }
 
