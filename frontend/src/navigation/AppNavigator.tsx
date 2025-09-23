@@ -29,7 +29,7 @@ export type TabParamList = {
 const Tab = createBottomTabNavigator<TabParamList>();
 const Stack = createStackNavigator<RootStackParamList>();
 
-function TabNavigator() {
+function TabNavigator({ onLogout }: { onLogout: () => void }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -61,9 +61,10 @@ function TabNavigator() {
     >
       <Tab.Screen 
         name="Home" 
-        component={HomeScreen} 
         options={{ title: 'Início' }}
-      />
+      >
+        {(props) => <HomeScreen {...props} onLogout={onLogout} />}
+      </Tab.Screen>
       <Tab.Screen 
         name="Lists" 
         component={ListsScreen} 
@@ -98,19 +99,12 @@ export default function AppNavigator({ onLogout }: AppNavigatorProps) {
       >
         <Stack.Screen 
           name="MainTabs" 
-          component={TabNavigator} 
           options={{ 
             headerShown: false,
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={onLogout}
-                style={{ marginRight: 15 }}
-              >
-                <Ionicons name="log-out-outline" size={24} color="#fff" />
-              </TouchableOpacity>
-            ),
           }}
-        />
+        >
+          {(props) => <TabNavigator {...props} onLogout={onLogout} />}
+        </Stack.Screen>
         <Stack.Screen 
           name="AddEditList" 
           component={AddEditListScreen} 

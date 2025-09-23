@@ -32,7 +32,11 @@ interface Stats {
   seriesToWatch: number;
 }
 
-export default function HomeScreen() {
+interface HomeScreenProps {
+  onLogout?: () => void;
+}
+
+export default function HomeScreen({ onLogout }: HomeScreenProps) {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [stats, setStats] = useState<Stats>({
     totalLists: 0,
@@ -110,7 +114,10 @@ export default function HomeScreen() {
           style: 'destructive',
           onPress: async () => {
             await authService.logout();
-            // O App.tsx vai detectar automaticamente e mostrar a tela de login
+            // Notificar o App.tsx para atualizar o estado
+            if (onLogout) {
+              onLogout();
+            }
           }
         }
       ]
