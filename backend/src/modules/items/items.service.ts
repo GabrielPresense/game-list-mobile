@@ -20,16 +20,17 @@ export class ItemsService {
     return await this.itemsRepository.save(item);
   }
 
-  async findAll(): Promise<Item[]> {
+  async findAll(userId: number): Promise<Item[]> {
     return await this.itemsRepository.find({
+      where: { userId },
       relations: ['list'],
       order: { createdAt: 'DESC' },
     });
   }
 
-  async findOne(id: number): Promise<Item> {
+  async findOne(id: number, userId: number): Promise<Item> {
     const item = await this.itemsRepository.findOne({
-      where: { id },
+      where: { id, userId },
       relations: ['list'],
     });
 
@@ -40,49 +41,51 @@ export class ItemsService {
     return item;
   }
 
-  async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
-    const item = await this.findOne(id);
+  async update(id: number, updateItemDto: UpdateItemDto, userId: number): Promise<Item> {
+    const item = await this.findOne(id, userId);
     
     Object.assign(item, updateItemDto);
     return await this.itemsRepository.save(item);
   }
 
-  async remove(id: number): Promise<void> {
-    const item = await this.findOne(id);
+  async remove(id: number, userId: number): Promise<void> {
+    const item = await this.findOne(id, userId);
     await this.itemsRepository.remove(item);
   }
 
-  async findByList(listId: number): Promise<Item[]> {
+  async findByList(listId: number, userId: number): Promise<Item[]> {
     return await this.itemsRepository.find({
-      where: { listId },
+      where: { listId, userId },
       relations: ['list'],
       order: { createdAt: 'DESC' },
     });
   }
 
-  async findByType(type: string): Promise<Item[]> {
+  async findByType(type: string, userId: number): Promise<Item[]> {
     return await this.itemsRepository.find({
-      where: { type: type as any },
+      where: { type: type as any, userId },
       relations: ['list'],
       order: { createdAt: 'DESC' },
     });
   }
 
-  async findByStatus(status: string): Promise<Item[]> {
+  async findByStatus(status: string, userId: number): Promise<Item[]> {
     return await this.itemsRepository.find({
-      where: { status: status as any },
+      where: { status: status as any, userId },
       relations: ['list'],
       order: { createdAt: 'DESC' },
     });
   }
 
-  async search(query: string): Promise<Item[]> {
+  async search(query: string, userId: number): Promise<Item[]> {
     return await this.itemsRepository
       .createQueryBuilder('item')
       .leftJoinAndSelect('item.list', 'list')
-      .where('item.title LIKE :query', { query: `%${query}%` })
-      .orWhere('item.description LIKE :query', { query: `%${query}%` })
-      .orWhere('item.genre LIKE :query', { query: `%${query}%` })
+      .where('item.userId = :userId', { userId })
+      .andWhere(
+        '(item.title LIKE :query OR item.description LIKE :query OR item.genre LIKE :query)',
+        { query: `%${query}%` }
+      )
       .orderBy('item.createdAt', 'DESC')
       .getMany();
   }

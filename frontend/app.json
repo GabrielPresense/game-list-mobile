@@ -39,13 +39,7 @@
       }
     },
     "plugins": [
-      "expo-font",
-      [
-        "@react-native-async-storage/async-storage",
-        {
-          "useNextStorage": true
-        }
-      ]
+      "expo-font"
     ]
   }
 }

@@ -33,14 +33,14 @@ export class ListsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Buscar todas as listas' })
+  @ApiOperation({ summary: 'Buscar todas as listas do usuário' })
   @ApiQuery({ name: 'type', required: false, description: 'Filtrar por tipo de lista' })
   @ApiResponse({ status: 200, description: 'Listas encontradas', type: [List] })
-  findAll(@Query('type') type?: string): Promise<List[]> {
+  findAll(@Query('type') type?: string, @Request() req?: any): Promise<List[]> {
     if (type) {
-      return this.listsService.findByType(type);
+      return this.listsService.findByType(type, req.user.id);
     }
-    return this.listsService.findAll();
+    return this.listsService.findAll(req.user.id);
   }
 
   @Get(':id')
@@ -48,8 +48,8 @@ export class ListsController {
   @ApiParam({ name: 'id', description: 'ID da lista' })
   @ApiResponse({ status: 200, description: 'Lista encontrada', type: List })
   @ApiResponse({ status: 404, description: 'Lista não encontrada' })
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<List> {
-    return this.listsService.findOne(id);
+  findOne(@Param('id', ParseIntPipe) id: number, @Request() req): Promise<List> {
+    return this.listsService.findOne(id, req.user.id);
   }
 
   @Patch(':id')
@@ -60,8 +60,9 @@ export class ListsController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateListDto: UpdateListDto,
+    @Request() req,
   ): Promise<List> {
-    return this.listsService.update(id, updateListDto);
+    return this.listsService.update(id, updateListDto, req.user.id);
   }
 
   @Delete(':id')
@@ -69,8 +70,8 @@ export class ListsController {
   @ApiParam({ name: 'id', description: 'ID da lista' })
   @ApiResponse({ status: 200, description: 'Lista deletada com sucesso' })
   @ApiResponse({ status: 404, description: 'Lista não encontrada' })
-  remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.listsService.remove(id);
+  remove(@Param('id', ParseIntPipe) id: number, @Request() req): Promise<void> {
+    return this.listsService.remove(id, req.user.id);
   }
 }
 

@@ -20,16 +20,17 @@ export class ListsService {
     return await this.listsRepository.save(list);
   }
 
-  async findAll(): Promise<List[]> {
+  async findAll(userId: number): Promise<List[]> {
     return await this.listsRepository.find({
+      where: { userId },
       relations: ['items'],
       order: { createdAt: 'DESC' },
     });
   }
 
-  async findOne(id: number): Promise<List> {
+  async findOne(id: number, userId: number): Promise<List> {
     const list = await this.listsRepository.findOne({
-      where: { id },
+      where: { id, userId },
       relations: ['items'],
     });
 
@@ -40,21 +41,21 @@ export class ListsService {
     return list;
   }
 
-  async update(id: number, updateListDto: UpdateListDto): Promise<List> {
-    const list = await this.findOne(id);
+  async update(id: number, updateListDto: UpdateListDto, userId: number): Promise<List> {
+    const list = await this.findOne(id, userId);
     
     Object.assign(list, updateListDto);
     return await this.listsRepository.save(list);
   }
 
-  async remove(id: number): Promise<void> {
-    const list = await this.findOne(id);
+  async remove(id: number, userId: number): Promise<void> {
+    const list = await this.findOne(id, userId);
     await this.listsRepository.remove(list);
   }
 
-  async findByType(type: string): Promise<List[]> {
+  async findByType(type: string, userId: number): Promise<List[]> {
     return await this.listsRepository.find({
-      where: { type: type as any },
+      where: { type: type as any, userId },
       relations: ['items'],
       order: { createdAt: 'DESC' },
     });
